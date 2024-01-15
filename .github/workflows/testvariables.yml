@@ -22,7 +22,7 @@ on:
 
 env:
   dockerfile: 'docker/docker-compose.yml'
-  globalenv: ${{ github.event.inputs.environment || 'echo ${GITHUB_REF_NAME}' }}
+  globalenv: ${{ github.event.inputs.environment || '$(echo ${GITHUB_REF_NAME})' }}
 
 jobs:
   set-envs:
