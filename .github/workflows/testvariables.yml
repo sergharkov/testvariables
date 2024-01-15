@@ -67,7 +67,8 @@ jobs:
       - name: Azure login
         id: azlogin
         run: |
-          echo ""
+          echo "docker-build.outputs.SETENV     ${{ needs.docker-build.outputs.SETENV }}"
+          echo "set-envs.outputs.SETENV         ${{ needs.set-envs.outputs.SETENV }}"
 
   show-logs-webapp:
     if: ${{ always() }}
@@ -78,5 +79,6 @@ jobs:
       - name: Azure login
         id: azlogin
         run: |
-          echo "${{ needs.docker-build.outputs.SETENV }}"
+          echo "docker-build.outputs.SETENV     ${{ needs.docker-build.outputs.SETENV }}"
+          echo "set-envs.outputs.SETENV         ${{ needs.set-envs.outputs.SETENV }}"
 
