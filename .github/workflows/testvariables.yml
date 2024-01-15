@@ -49,7 +49,7 @@ jobs:
     if: ${{ github.event.inputs.manualsetdeploy != 'true'  }}
     outputs:
       SETENV: ${{ needs.set-envs.outputs.SETENV }}
-    environment: ${{ needs.set-envs.outputs.SETENV }}
+    environment: ${{ github.event.inputs.environment || github.ref_name }} #${{ needs.set-envs.outputs.SETENV }}
     runs-on: ubuntu-latest
     steps:
       - name: Show parameters
@@ -78,7 +78,7 @@ jobs:
   show-logs-webapp:
     if: ${{ always() }}
     needs: [ docker-build ]
-    environment: ${{ needs.set-envs.outputs.SETENV }} #'${{$globalenv}}'
+    environment: ${{ github.event.inputs.environment || github.ref_name }} #'${{$globalenv}}'
     runs-on: ubuntu-latest
     steps:
       - name: Azure login
