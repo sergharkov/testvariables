@@ -41,13 +41,14 @@ jobs:
           echo "$SETENV"                                 >> ./path/to/artifact/$SETENV
           echo "SETENV=$SETENV"                          >> $GITHUB_ENV
           echo "globalenv                    ${globalenv}"
+          echo "var.STATE                    ${{ vars.STATE }}"
 
   docker-build:
     needs: [ set-envs ]
     if: ${{ github.event.inputs.manualsetdeploy != 'true'  }}
     outputs:
       SETENV: ${{ needs.set-envs.outputs.SETENV }}
-    environment: ${{ needs.set-envs.outputs.SETENV }}
+    environment: ${globalenv}
     runs-on: ubuntu-latest
     steps:
       - name: Show parameters
@@ -56,11 +57,12 @@ jobs:
           BUILDNUMBER=$(date +%d.%m.%y_%H.%M)
           echo "${{ github.event.inputs.environment || '${GITHUB_REF_NAME}' }}"
           echo "globalenv                    ${globalenv}"
+          echo "var.STATE                    ${{ vars.STATE }}"
 
   update-webapp:
     if: ${{ always() }}
     needs: [ docker-build ]
-    environment: ${{ needs.docker-build.outputs.SETENV }}
+    environment:  ${globalenv}
     runs-on: ubuntu-latest
     steps:
       - name: Azure login
@@ -69,11 +71,12 @@ jobs:
           echo "docker-build.outputs.SETENV     ${{ needs.docker-build.outputs.SETENV }}"
           echo "set-envs.outputs.SETENV         ${{ needs.set-envs.outputs.SETENV }}"
           echo "globalenv                    ${globalenv}"
+          echo "var.STATE                    ${{ vars.STATE }}"
 
   show-logs-webapp:
     if: ${{ always() }}
     needs: [ docker-build ]
-    environment: ${{ needs.docker-build.outputs.SETENV }}
+    environment:  ${globalenv}
     runs-on: ubuntu-latest
     steps:
       - name: Azure login
@@ -82,4 +85,5 @@ jobs:
           echo "docker-build.outputs.SETENV     ${{ needs.docker-build.outputs.SETENV }}"
           echo "set-envs.outputs.SETENV         ${{ needs.set-envs.outputs.SETENV }}"
           echo "globalenv                    ${globalenv}"
+          echo "var.STATE                    ${{ vars.STATE }}"
 
