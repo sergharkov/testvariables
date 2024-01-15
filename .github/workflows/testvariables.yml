@@ -1,0 +1,82 @@
+name: CI-CD-WebApp
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to run staging against '
+        required: true
+        default: ''
+        type: choice
+        options:
+        - main
+        - staging
+
+      manualsetdeploy:
+        description: 'Set checkBox if need set manual full image name'
+        required: true
+        # default: ''
+        type: boolean
+  push:
+    branches:
+      - 'main'
+
+env:
+  dockerfile: 'docker/docker-compose.yml'
+
+jobs:
+  set-envs:
+    outputs:
+      SETENV: ${{ steps.usedenv.outputs.SETENV }}
+    runs-on: ubuntu-latest
+    steps:
+      # SET env depends on branch for commit action
+      - name: SHOW used ENV
+        id: usedenv
+        run: |
+          SETENV=${{ github.event.inputs.environment || '${GITHUB_REF_NAME}' }}
+          echo "SETENV                                   === $SETENV"
+          echo "SETENV=$SETENV"                          >> $GITHUB_OUTPUT
+          mkdir -p ./path/to/artifact/
+          echo "$SETENV"                                 >> ./path/to/artifact/$SETENV
+          echo "SETENV=$SETENV"                          >> $GITHUB_ENV
+
+  docker-build:
+    needs: [ set-envs ]
+    if: ${{ github.event.inputs.manualsetdeploy != 'true'  }}
+    outputs:
+      SETENV: ${{ needs.set-envs.outputs.SETENV }}
+    environment: ${{ needs.set-envs.outputs.SETENV }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show parameters
+        id: chowparameters
+        run: |
+          echo "${{ github.event.inputs.environment || '${GITHUB_REF_NAME}' }}"
+
+      - name: Build and push the Docker image app
+        id: buildpushimg
+        run: |
+          BUILDNUMBER=$(date +%d.%m.%y_%H.%M)
+
+  update-webapp:
+    if: ${{ always() }}
+    needs: [ docker-build ]
+    environment: ${{ needs.docker-build.outputs.SETENV }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Azure login
+        id: azlogin
+        run: |
+          echo ""
+
+  show-logs-webapp:
+    if: ${{ always() }}
+    needs: [ docker-build ]
+    environment: ${{ needs.docker-build.outputs.SETENV }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Azure login
+        id: azlogin
+        run: |
+          echo "${{ needs.docker-build.outputs.SETENV }}"
+
