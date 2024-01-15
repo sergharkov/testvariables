@@ -1,4 +1,4 @@
-honame: CI-CD-WebApp
+name: CI-CD-WebApp
 on:
   workflow_dispatch:
     inputs:
