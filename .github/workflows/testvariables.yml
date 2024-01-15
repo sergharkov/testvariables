@@ -76,7 +76,7 @@ jobs:
   show-logs-webapp:
     if: ${{ always() }}
     needs: [ docker-build ]
-    environment: "${{$globalenv}}"
+    environment: '${{$globalenv}}'
     runs-on: ubuntu-latest
     steps:
       - name: Azure login
