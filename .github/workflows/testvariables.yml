@@ -63,7 +63,7 @@ jobs:
   update-webapp:
     if: ${{ always() }}
     needs: [ docker-build ]
-    environment:  ${{ needs.set-envs.outputs.SETENV }}
+    environment:  ${{env.globalenv}} #${{ needs.set-envs.outputs.SETENV }}
     runs-on: ubuntu-latest
     steps:
       - name: Azure login
