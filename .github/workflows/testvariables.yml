@@ -72,7 +72,7 @@ jobs:
           echo "docker-build.outputs.SETENV     ${{ needs.docker-build.outputs.SETENV }}"
           echo "set-envs.outputs.SETENV         ${{ needs.set-envs.outputs.SETENV }}"
           echo "globalenv                    ${globalenv}"
-          echo "env.globalenv                    ${env.globalenv}"
+          echo "env.globalenv                    ${{env.globalenv}}"
           echo "var.STATE                    ${{ vars.STATE }}"
 
   show-logs-webapp:
