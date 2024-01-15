@@ -27,7 +27,7 @@ env:
 jobs:
   set-envs:
     outputs:
-      SETENV: ${{ steps.usedenv.outputs.SETENV }}
+      SETENV: ${{ github.event.inputs.environment || github.ref_name }} #${{ steps.usedenv.outputs.SETENV }}
     runs-on: ubuntu-latest
     steps:
       # SET env depends on branch for commit action
@@ -42,6 +42,7 @@ jobs:
           echo "SETENV=$SETENV"                          >> $GITHUB_ENV
           echo "globalenv                    ${globalenv}"
           echo "var.STATE                    ${{ vars.STATE }}"
+#${{ needs.set-envs.outputs.SETENV }}
 
   docker-build:
     needs: [ set-envs ]
@@ -76,7 +77,7 @@ jobs:
   show-logs-webapp:
     if: ${{ always() }}
     needs: [ docker-build ]
-    environment: '${{$globalenv}}'
+    environment: ${{ needs.set-envs.outputs.SETENV }} #'${{$globalenv}}'
     runs-on: ubuntu-latest
     steps:
       - name: Azure login
