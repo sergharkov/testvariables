@@ -22,6 +22,7 @@ on:
 
 env:
   dockerfile: 'docker/docker-compose.yml'
+  globalenv: "${{ github.event.inputs.environment || '${GITHUB_REF_NAME}' }}"
 
 jobs:
   set-envs:
@@ -39,6 +40,7 @@ jobs:
           mkdir -p ./path/to/artifact/
           echo "$SETENV"                                 >> ./path/to/artifact/$SETENV
           echo "SETENV=$SETENV"                          >> $GITHUB_ENV
+          echo "globalenv                    ${globalenv}"
 
   docker-build:
     needs: [ set-envs ]
@@ -51,12 +53,9 @@ jobs:
       - name: Show parameters
         id: chowparameters
         run: |
-          echo "${{ github.event.inputs.environment || '${GITHUB_REF_NAME}' }}"
-
-      - name: Build and push the Docker image app
-        id: buildpushimg
-        run: |
           BUILDNUMBER=$(date +%d.%m.%y_%H.%M)
+          echo "${{ github.event.inputs.environment || '${GITHUB_REF_NAME}' }}"
+          echo "globalenv                    ${globalenv}"
 
   update-webapp:
     if: ${{ always() }}
@@ -69,6 +68,7 @@ jobs:
         run: |
           echo "docker-build.outputs.SETENV     ${{ needs.docker-build.outputs.SETENV }}"
           echo "set-envs.outputs.SETENV         ${{ needs.set-envs.outputs.SETENV }}"
+          echo "globalenv                    ${globalenv}"
 
   show-logs-webapp:
     if: ${{ always() }}
@@ -81,4 +81,5 @@ jobs:
         run: |
           echo "docker-build.outputs.SETENV     ${{ needs.docker-build.outputs.SETENV }}"
           echo "set-envs.outputs.SETENV         ${{ needs.set-envs.outputs.SETENV }}"
+          echo "globalenv                    ${globalenv}"
 
