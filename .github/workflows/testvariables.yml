@@ -69,7 +69,10 @@ jobs:
         id: chowparameters
         run: |
           echo "testvarforalljobs       ==  ${{ github.event.inputs.testvarforalljobs }}"
-          echo "globaltestvarforalljobs ==  ${globaltestvarforalljobs}"
+          echo "testvarforalljobs            == $testvarforalljobs"
+          echo "globaltestvarforalljobs      == ${globaltestvarforalljobs}"
+          echo "testresetvarforalljobs       == ${testresetvarforalljobs}"
+          echo "env.globaltestvarforalljobs  == ${{ env.globaltestvarforalljobs }}"
         
           # BUILDNUMBER=$(date +%d.%m.%y_%H.%M)
           # echo "${{ github.event.inputs.environment || '${GITHUB_REF_NAME}' }}"
@@ -86,7 +89,10 @@ jobs:
         id: azlogin
         run: |
           echo "testvarforalljobs       ==  ${{ github.event.inputs.testvarforalljobs }}"
-          echo "globaltestvarforalljobs ==  ${globaltestvarforalljobs}"
+          echo "testvarforalljobs            == $testvarforalljobs"
+          echo "globaltestvarforalljobs      == ${globaltestvarforalljobs}"
+          echo "testresetvarforalljobs       == ${testresetvarforalljobs}"
+          echo "env.globaltestvarforalljobs  == ${{ env.globaltestvarforalljobs }}"
 
 
           
