@@ -43,6 +43,9 @@ jobs:
           echo "testresetvarforalljobs       == ${testresetvarforalljobs}"
           echo "env.globaltestvarforalljobs  == ${{ env.globaltestvarforalljobs }}"
           testresetvarforalljobs="testresetvarforalljobs22222222222222222222222"
+          
+          echo "::set-env name=testresetvarforalljobs::$testresetvarforalljobs"
+          
           echo "testresetvarforalljobs       ==  $testresetvarforalljobs"
           echo "testvarforalljobs=$testvarforalljobs"                          >> $GITHUB_OUTPUT
           echo "testresetvarforalljobs=$testresetvarforalljobs"                >> $GITHUB_ENV
