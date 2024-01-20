@@ -29,8 +29,8 @@ env:
 
 jobs:
   set-envs:
-    env: 
-      ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+    # env: 
+    #   ACTIONS_ALLOW_UNSECURE_COMMANDS: true
     outputs:
       SETENV: ${{ steps.usedenv.outputs.SETENV }}
       testvarforalljobs: ${{ steps.usedenv.outputs.testvarforalljobs }}
@@ -47,13 +47,15 @@ jobs:
           echo "env.globaltestvarforalljobs  == ${{ env.globaltestvarforalljobs }}"
           testresetvarforalljobs="testresetvarforalljobs22222222222222222222222"
           echo "TEST_RESULT = $TEST_RESULT"
-          echo "::set-env name=TEST_RESULT::22222222222222222222222222"
-          echo "TEST_RESULT = $TEST_RESULT"
+
           
           echo "testresetvarforalljobs       ==  $testresetvarforalljobs"
           echo "testvarforalljobs=$testvarforalljobs"                          >> $GITHUB_OUTPUT
           echo "testresetvarforalljobs=$testresetvarforalljobs"                >> $GITHUB_ENV
-          
+      - name: set many environment variables
+        uses: allenevans/set-env@v3.0.0
+        with:
+          TEST_RESULT: '44444444444444444444444'
 
           
 #           SETENV=${{ github.event.inputs.environment || '${GITHUB_REF_NAME}' }}
