@@ -25,7 +25,7 @@ env:
   globaltestvarforalljobs: '------globaltestvarforalljobs----------'
   testresetvarforalljobs: '------testresetvarforalljobs----------'  
   globalenv: ${{ github.event.inputs.environment || github.ref_name }}
-  TEST_RESULT: 'success'
+  TEST_RESULT: 'TEST_RESULTTEST_RESULTTEST_RESULTTEST_RESULTTEST_RESULTTEST_RESULT'
 
 jobs:
   set-envs:
@@ -47,7 +47,7 @@ jobs:
           echo "env.globaltestvarforalljobs  == ${{ env.globaltestvarforalljobs }}"
           testresetvarforalljobs="testresetvarforalljobs22222222222222222222222"
           echo "TEST_RESULT = $TEST_RESULT"
-          echo "::set-env name=TEST_RESULT::failure"
+          echo "::set-env name=TEST_RESULT::22222222222222222222222222"
           echo "TEST_RESULT = $TEST_RESULT"
           
           echo "testresetvarforalljobs       ==  $testresetvarforalljobs"
