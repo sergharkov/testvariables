@@ -42,20 +42,22 @@ jobs:
           echo "globaltestvarforalljobs      == ${globaltestvarforalljobs}"
           echo "testresetvarforalljobs       == ${testresetvarforalljobs}"
           echo "env.globaltestvarforalljobs  == ${{ env.globaltestvarforalljobs }}"
+          testresetvarforalljobs="testresetvarforalljobs22222222222222222222222"
+          
           echo "testvarforalljobs=$testvarforalljobs"                          >> $GITHUB_OUTPUT
-          echo "testvarforalljobs=$testvarforalljobs"                          >> $GITHUB_ENV
+          echo "testresetvarforalljobs=$testresetvarforalljobs"                          >> $GITHUB_ENV
           
 
           
-          SETENV=${{ github.event.inputs.environment || '${GITHUB_REF_NAME}' }}
-          echo "SETENV                                   === $SETENV"
-          echo "SETENV=$SETENV"                          >> $GITHUB_OUTPUT
-          mkdir -p ./path/to/artifact/
-          echo "$SETENV"                                 >> ./path/to/artifact/$SETENV
-          echo "SETENV=$SETENV"                          >> $GITHUB_ENV
-          echo "globalenv                    ${globalenv}"
-          echo "var.STATE                    ${{ vars.STATE }}"
-#${{ needs.set-envs.outputs.SETENV }}
+#           SETENV=${{ github.event.inputs.environment || '${GITHUB_REF_NAME}' }}
+#           echo "SETENV                                   === $SETENV"
+#           echo "SETENV=$SETENV"                          >> $GITHUB_OUTPUT
+#           mkdir -p ./path/to/artifact/
+#           echo "$SETENV"                                 >> ./path/to/artifact/$SETENV
+#           echo "SETENV=$SETENV"                          >> $GITHUB_ENV
+#           echo "globalenv                    ${globalenv}"
+#           echo "var.STATE                    ${{ vars.STATE }}"
+# #${{ needs.set-envs.outputs.SETENV }}
 
   docker-build:
     needs: [ set-envs ]
