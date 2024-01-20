@@ -43,9 +43,9 @@ jobs:
           echo "testresetvarforalljobs       == ${testresetvarforalljobs}"
           echo "env.globaltestvarforalljobs  == ${{ env.globaltestvarforalljobs }}"
           testresetvarforalljobs="testresetvarforalljobs22222222222222222222222"
-          
+          echo "testresetvarforalljobs       ==  $testresetvarforalljobs"
           echo "testvarforalljobs=$testvarforalljobs"                          >> $GITHUB_OUTPUT
-          echo "testresetvarforalljobs=$testresetvarforalljobs"                          >> $GITHUB_ENV
+          echo "testresetvarforalljobs=$testresetvarforalljobs"                >> $GITHUB_ENV
           
 
           
@@ -74,6 +74,7 @@ jobs:
           echo "testvarforalljobs            == $testvarforalljobs"
           echo "globaltestvarforalljobs      == ${globaltestvarforalljobs}"
           echo "testresetvarforalljobs       == ${testresetvarforalljobs}"
+          echo "env.testresetvarforalljobs       == ${{ env.testresetvarforalljobs }}"
           echo "env.globaltestvarforalljobs  == ${{ env.globaltestvarforalljobs }}"
         
           # BUILDNUMBER=$(date +%d.%m.%y_%H.%M)
@@ -94,6 +95,7 @@ jobs:
           echo "testvarforalljobs            == $testvarforalljobs"
           echo "globaltestvarforalljobs      == ${globaltestvarforalljobs}"
           echo "testresetvarforalljobs       == ${testresetvarforalljobs}"
+          echo "env.testresetvarforalljobs       == ${{ env.testresetvarforalljobs }}"
           echo "env.globaltestvarforalljobs  == ${{ env.globaltestvarforalljobs }}"
 
 
