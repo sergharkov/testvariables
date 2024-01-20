@@ -22,7 +22,8 @@ on:
 
 env:
   dockerfile: 'docker/docker-compose.yml'
-  globaltestvarforalljobs: '----------------'
+  globaltestvarforalljobs: '------globaltestvarforalljobs----------'
+  testresetvarforalljobs: '------testresetvarforalljobs----------'  
   globalenv: ${{ github.event.inputs.environment || github.ref_name }}
 
 jobs:
@@ -37,8 +38,10 @@ jobs:
         id: usedenv
         run: |
           testvarforalljobs="testvarforalljobs111111111111111111"
-          echo "testvarforalljobs        == $testvarforalljobs"
-          echo "globaltestvarforalljobs  == ${globaltestvarforalljobs}"
+          echo "testvarforalljobs            == $testvarforalljobs"
+          echo "globaltestvarforalljobs      == ${globaltestvarforalljobs}"
+          echo "testresetvarforalljobs       == ${testresetvarforalljobs}"
+          echo "env.globaltestvarforalljobs  == ${{ env.globaltestvarforalljobs }}"
           echo "testvarforalljobs=$testvarforalljobs"                          >> $GITHUB_OUTPUT
           echo "testvarforalljobs=$testvarforalljobs"                          >> $GITHUB_ENV
           
