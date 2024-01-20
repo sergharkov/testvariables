@@ -52,11 +52,15 @@ jobs:
           echo "testresetvarforalljobs       ==  $testresetvarforalljobs"
           echo "testvarforalljobs=$testvarforalljobs"                          >> $GITHUB_OUTPUT
           echo "testresetvarforalljobs=$testresetvarforalljobs"                >> $GITHUB_ENV
-      - name: set many environment variables
-        uses: allenevans/set-env@v3.0.0
+          
+      - name: SetVariable
+          # You may pin to the exact commit or the version.
+          # uses: deep-mm/set-variables@e48e93ecdfe91869ca45ccb52ae1d7eeaad9042f
+        uses: deep-mm/set-variables@v1.0
         with:
-          TEST_RESULT: '44444444444444444444444'
-
+          # Name of variable file
+          variableFileName: '333333333333' 
+          
           
 #           SETENV=${{ github.event.inputs.environment || '${GITHUB_REF_NAME}' }}
 #           echo "SETENV                                   === $SETENV"
@@ -86,6 +90,7 @@ jobs:
           echo "testresetvarforalljobs       == ${testresetvarforalljobs}"
           echo "env.testresetvarforalljobs       == ${{ env.testresetvarforalljobs }}"
           echo "env.globaltestvarforalljobs  == ${{ env.globaltestvarforalljobs }}"
+          echo "variableFileNamevariableFileNamevariableFileName    ${variableFileName}"
         
           # BUILDNUMBER=$(date +%d.%m.%y_%H.%M)
           # echo "${{ github.event.inputs.environment || '${GITHUB_REF_NAME}' }}"
