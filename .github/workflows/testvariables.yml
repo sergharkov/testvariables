@@ -25,6 +25,7 @@ env:
   globaltestvarforalljobs: '------globaltestvarforalljobs----------'
   testresetvarforalljobs: '------testresetvarforalljobs----------'  
   globalenv: ${{ github.event.inputs.environment || github.ref_name }}
+  TEST_RESULT: 'success'
 
 jobs:
   set-envs:
@@ -43,8 +44,9 @@ jobs:
           echo "testresetvarforalljobs       == ${testresetvarforalljobs}"
           echo "env.globaltestvarforalljobs  == ${{ env.globaltestvarforalljobs }}"
           testresetvarforalljobs="testresetvarforalljobs22222222222222222222222"
-          
-          echo "::set-env name=testresetvarforalljobs::$testresetvarforalljobs"
+          echo "TEST_RESULT = $TEST_RESULT"
+          run: echo "::set-env name=TEST_RESULT::failure"
+          echo "TEST_RESULT = $TEST_RESULT"
           
           echo "testresetvarforalljobs       ==  $testresetvarforalljobs"
           echo "testvarforalljobs=$testvarforalljobs"                          >> $GITHUB_OUTPUT
@@ -73,6 +75,7 @@ jobs:
       - name: Show parameters
         id: chowparameters
         run: |
+          echo "TEST_RESULT = $TEST_RESULT"
           echo "testvarforalljobs       ==  ${{ github.event.inputs.testvarforalljobs }}"
           echo "testvarforalljobs            == $testvarforalljobs"
           echo "globaltestvarforalljobs      == ${globaltestvarforalljobs}"
@@ -94,6 +97,7 @@ jobs:
       - name: Azure login
         id: azlogin
         run: |
+          echo "TEST_RESULT = $TEST_RESULT"
           echo "testvarforalljobs       ==  ${{ github.event.inputs.testvarforalljobs }}"
           echo "testvarforalljobs            == $testvarforalljobs"
           echo "globaltestvarforalljobs      == ${globaltestvarforalljobs}"
