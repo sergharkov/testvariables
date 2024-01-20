@@ -22,18 +22,28 @@ on:
 
 env:
   dockerfile: 'docker/docker-compose.yml'
+  globaltestvarforalljobs: '----------------'
   globalenv: ${{ github.event.inputs.environment || github.ref_name }}
 
 jobs:
   set-envs:
     outputs:
       SETENV: ${{ steps.usedenv.outputs.SETENV }}
+      testvarforalljobs: ${{ steps.usedenv.outputs.testvarforalljobs }}
     runs-on: ubuntu-latest
     steps:
       # SET env depends on branch for commit action
       - name: SHOW used ENV
         id: usedenv
         run: |
+          testvarforalljobs="testvarforalljobs111111111111111111"
+          echo "testvarforalljobs        == $testvarforalljobs"
+          echo "globaltestvarforalljobs  == ${globaltestvarforalljobs}"
+          echo "testvarforalljobs=$testvarforalljobs"                          >> $GITHUB_OUTPUT
+          echo "testvarforalljobs=$testvarforalljobs"                          >> $GITHUB_ENV
+          
+
+          
           SETENV=${{ github.event.inputs.environment || '${GITHUB_REF_NAME}' }}
           echo "SETENV                                   === $SETENV"
           echo "SETENV=$SETENV"                          >> $GITHUB_OUTPUT
@@ -55,10 +65,13 @@ jobs:
       - name: Show parameters
         id: chowparameters
         run: |
-          BUILDNUMBER=$(date +%d.%m.%y_%H.%M)
-          echo "${{ github.event.inputs.environment || '${GITHUB_REF_NAME}' }}"
-          echo "globalenv                    ${globalenv}"
-          echo "var.STATE                    ${{ vars.STATE }}"
+          echo "testvarforalljobs       ==  ${{ github.event.inputs.testvarforalljobs }}"
+          echo "globaltestvarforalljobs ==  ${globaltestvarforalljobs}"
+        
+          # BUILDNUMBER=$(date +%d.%m.%y_%H.%M)
+          # echo "${{ github.event.inputs.environment || '${GITHUB_REF_NAME}' }}"
+          # echo "globalenv                    ${globalenv}"
+          # echo "var.STATE                    ${{ vars.STATE }}"
 
   update-webapp:
     if: ${{ always() }}
@@ -69,23 +82,16 @@ jobs:
       - name: Azure login
         id: azlogin
         run: |
-          echo "docker-build.outputs.SETENV     ${{ needs.docker-build.outputs.SETENV }}"
-          echo "set-envs.outputs.SETENV         ${{ needs.set-envs.outputs.SETENV }}"
-          echo "globalenv                    ${globalenv}"
-          echo "env.globalenv                    ${{env.globalenv}}"
-          echo "var.STATE                    ${{ vars.STATE }}"
+          echo "testvarforalljobs       ==  ${{ github.event.inputs.testvarforalljobs }}"
+          echo "globaltestvarforalljobs ==  ${globaltestvarforalljobs}"
 
-  show-logs-webapp:
-    if: ${{ always() }}
-    needs: [ docker-build ]
-    environment: ${{ github.event.inputs.environment || github.ref_name }} #'${{$globalenv}}'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Azure login
-        id: azlogin
-        run: |
-          echo "docker-build.outputs.SETENV     ${{ needs.docker-build.outputs.SETENV }}"
-          echo "set-envs.outputs.SETENV         ${{ needs.set-envs.outputs.SETENV }}"
-          echo "globalenv                    ${globalenv}"
-          echo "var.STATE                    ${{ vars.STATE }}"
+
+          
+          # echo "docker-build.outputs.SETENV     ${{ needs.docker-build.outputs.SETENV }}"
+          # echo "set-envs.outputs.SETENV         ${{ needs.set-envs.outputs.SETENV }}"
+          # echo "globalenv                    ${globalenv}"
+          # echo "env.globalenv                    ${{env.globalenv}}"
+          # echo "var.STATE                    ${{ vars.STATE }}"
+
+
 
