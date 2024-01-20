@@ -45,7 +45,7 @@ jobs:
           echo "env.globaltestvarforalljobs  == ${{ env.globaltestvarforalljobs }}"
           testresetvarforalljobs="testresetvarforalljobs22222222222222222222222"
           echo "TEST_RESULT = $TEST_RESULT"
-          run: echo "::set-env name=TEST_RESULT::failure"
+          echo "::set-env name=TEST_RESULT::failure"
           echo "TEST_RESULT = $TEST_RESULT"
           
           echo "testresetvarforalljobs       ==  $testresetvarforalljobs"
