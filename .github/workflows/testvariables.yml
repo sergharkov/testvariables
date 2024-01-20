@@ -29,6 +29,8 @@ env:
 
 jobs:
   set-envs:
+    env: 
+      ACTIONS_ALLOW_UNSECURE_COMMANDS: true
     outputs:
       SETENV: ${{ steps.usedenv.outputs.SETENV }}
       testvarforalljobs: ${{ steps.usedenv.outputs.testvarforalljobs }}
