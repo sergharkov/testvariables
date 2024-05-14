@@ -1,0 +1,164 @@
+name: CI-CD-WebApp
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: ''
+        type: choice
+        options:
+        - ---
+        - devtest
+        - test
+        - development
+        - staging
+        - uat
+      manualsetversion:
+        description: 'Set manual full image name in format   https://[container registry]/[repository]:[tag]'
+        required: false
+        default: ''
+        type: string
+      manualsetdeploy:
+        description: 'Set checkBox if need set manual full image name'
+        required: true
+        # default: ''
+        type: boolean
+      needlogsstep:
+        description: 'Set checkBox if need run step with logs WebApp'
+        required: true
+        type: boolean
+      loglevel:
+        description: 'Show Logs WebApp'
+        required: true
+        default: '20'
+        type: choice
+        options:
+        - '10'
+        - '20'
+        - '30'
+      forcedeploy:
+        description: 'Set checkBox if need force deploy WebApp(with downtime)'
+        required: true
+        type: boolean
+      needdbbackup:
+        description: 'Set checkBox if need backup DB'
+        required: true
+        default: 'true'
+        type: boolean
+  push:
+    branches:
+      - 'main'
+
+env:
+  dockerfilecompose: 'docker/docker-compose.yml'
+jobs:
+  set-envs:
+    runs-on: ubuntu-latest
+    steps:
+      # SET env depends on branch for commit action
+      - name: SHOW used ENV
+        id: usedenv
+        run: |
+          echo "--------------------------------"
+          
+      - name: Upload artifact envstage
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.SETENV }}
+          path: path/to/artifact/
+
+  docker-build:
+    needs: [ set-envs ]
+    if: ${{ github.event.inputs.manualsetdeploy != 'true'  }}
+    environment: ${{ github.event.inputs.environment || github.ref_name }}
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+      - name: Show parameters
+        id: chowparameters
+        run: |
+          echo "--------------------------------"
+
+      - name: Preparing docker-compose file
+        if: ${{ false }}
+        id: prepdockercompose
+        run: |
+          echo "--------------------------------"
+
+      - name: Build and push the Docker image app
+        id: buildpushimg
+        run: |
+          echo "--------------------------------"
+          docker build
+
+  backup-db:
+    if: ${{ github.event.inputs.needdbbackup != 'false' && always() && contains(needs.*.result, 'failure') }}
+    needs: [ docker-build, set-envs ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Azure login
+        id: azlogin
+        run: |
+          echo "--------------------------------"
+          
+      - name: DB backup Azure PostgreSQL
+        id: dbbackupsaas
+        run: |
+          echo "--------------------------------"
+
+      # - name: Upload artifact BD dump
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: backup-db
+      #     path: path/to/artifact/
+      #     retention-days: 5
+      #     compression-level: '9'
+
+  update-webapp:
+    if: ${{ always() && needs.backup-db.result != 'failure' }}
+    needs: [ backup-db, docker-build ]
+    environment: ${{ github.event.inputs.environment || github.ref_name }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Azure login
+        id: azlogin
+        run: |
+          echo "--------------------------------"
+          
+      - name: Force update WebAPP
+        if: ${{ github.event.inputs.forcedeploy == 'true' }}
+        id: forceupdatewebapp
+        run: |
+          echo "--------------------------------"
+          
+      - name: Restart update WebAPP
+        if: ${{ github.event.inputs.forcedeploy != 'true'  }}
+        id: restartupdatewebapp
+        run: |
+          echo "--------------------------------"
+
+  show-logs-webapp:
+    if: ${{ always() && github.event.inputs.needlogsstep != 'false'  }}
+    needs: [ docker-build, backup-db, update-webapp ]
+    environment: ${{ github.event.inputs.environment || github.ref_name }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Azure login
+        id: azlogin
+        run: |
+          echo "job: show-logs-webapp  step: Azure login"
+
+  curl-app:
+    if: ${{ always() }}
+    needs: [ update-webapp ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Curl WebAPP URL
+        timeout-minutes: 45
+        id: curlwebapp
+        run: |
+          echo "job: curl-app  step: Curl WebAPP URL"
