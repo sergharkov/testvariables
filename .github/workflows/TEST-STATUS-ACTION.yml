@@ -121,7 +121,7 @@ jobs:
   update-webapp:
     # if: ${{ always() && needs.backup-db.result != 'failure' }}
     needs: [ backup-db, docker-build ]
-    environment: ${{ github.event.inputs.environment || github.ref_name && success()}}
+    environment: ${{ github.event.inputs.environment || github.ref_name && success() }}
     runs-on: ubuntu-latest
     steps:
       - name: Azure login
