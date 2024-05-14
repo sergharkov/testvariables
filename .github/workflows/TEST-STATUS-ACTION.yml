@@ -96,7 +96,7 @@ jobs:
           docker build
 
   backup-db:
-    if: ${{ github.event.inputs.needdbbackup != 'false' && always() && contains(needs.*.result, 'failure') }}
+    # if: ${{ github.event.inputs.needdbbackup != 'false' && always() && contains(needs.*.result, 'failure') }}
     needs: [ docker-build, set-envs ]
     runs-on: ubuntu-latest
     steps:
@@ -119,7 +119,7 @@ jobs:
       #     compression-level: '9'
 
   update-webapp:
-    if: ${{ always() && needs.backup-db.result != 'failure' }}
+    # if: ${{ always() && needs.backup-db.result != 'failure' }}
     needs: [ backup-db, docker-build ]
     environment: ${{ github.event.inputs.environment || github.ref_name }}
     runs-on: ubuntu-latest
