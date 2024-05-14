@@ -96,7 +96,7 @@ jobs:
           docker build
 
   backup-db:
-    if: ${{ github.event.inputs.needdbbackup != 'false' && always() || contains(needs.*.result, 'success') }}
+    if: ${{ github.event.inputs.needdbbackup != 'false' && always() && contains(needs.*.result, 'success') }}
     needs: [ docker-build, set-envs ]
     runs-on: ubuntu-latest
     steps:
