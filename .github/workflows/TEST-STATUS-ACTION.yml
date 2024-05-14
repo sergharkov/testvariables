@@ -97,7 +97,7 @@ jobs:
           echo "contains(needs.*.result, 'failure')"
 
   backup-db:
-    if: ${{ github.event.inputs.needdbbackup != 'false' && steps.buildpushimg.conclusion == 'success'  }}
+    if: ${{ github.event.inputs.needdbbackup != 'false' && needs.buildpushimg.conclusion == 'success'  }}
     needs: [ docker-build, set-envs ]
     runs-on: ubuntu-latest
     steps:
