@@ -93,11 +93,11 @@ jobs:
         id: buildpushimg
         run: |
           echo "--------------------------------"
+          echo "contains(needs.*.result, 'failure')"          
           docker build
-          echo "contains(needs.*.result, 'failure')"
 
   backup-db:
-    if: ${{ github.event.inputs.needdbbackup != 'false' && always() || needs.buildpushimg.conclusion != 'failure'  }}
+    if: ${{ github.event.inputs.needdbbackup != 'false' }}
     needs: [ docker-build, set-envs ]
     runs-on: ubuntu-latest
     steps:
