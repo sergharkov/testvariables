@@ -111,6 +111,13 @@ jobs:
         run: |
           echo "--------------------------------"
 
+      - name: Build and push the Docker image app
+        id: buildpushimg
+        run: |
+          echo "--------------------------------"
+          echo "contains(needs.*.result, 'failure')"          
+          docker build
+
       # - name: Upload artifact BD dump
       #   uses: actions/upload-artifact@v4
       #   with:
