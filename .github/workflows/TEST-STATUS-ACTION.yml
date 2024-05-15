@@ -120,7 +120,7 @@ jobs:
       #     compression-level: '9'
 
   update-webapp:
-    # if: ${{ always() && needs.backup-db.result != 'failure' }}
+    if: ${{ always() && needs.backup-db.result != 'failure' && needs.docker-build.result != 'failure' }}
     needs: [ backup-db, docker-build ]
     environment: ${{ github.event.inputs.environment || github.ref_name }}
     runs-on: ubuntu-latest
